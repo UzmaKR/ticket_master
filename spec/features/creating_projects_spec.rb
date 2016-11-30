@@ -3,7 +3,7 @@ require 'rails_helper'
 Rails.feature "Users can create new projects" do
   before do
     visit "/"
-
+    login_as(FactoryGirl.create(:user, :admin))
     click_link "New Project"
   end
 
