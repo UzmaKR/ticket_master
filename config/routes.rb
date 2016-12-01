@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   namespace :admin do
    root "application#index"
    resources :projects, only: [:new, :create, :destroy]
-   resources :users, only: [:index, :show, :new, :create]
+   resources :users, only: [:index, :show, :new, :create, :edit, :update]
   end
 
   devise_for :users
