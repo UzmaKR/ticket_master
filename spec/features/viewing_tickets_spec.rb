@@ -5,15 +5,18 @@ RSpec.feature "User can view tickets" do
 
   before do
     sublime = FactoryGirl.create(:project, name: "Sublime Text 3")
+    assign_role!(author, :viewer, sublime)
     FactoryGirl.create(:ticket, project: sublime, author: author, 
       name: "Make it shiny!",
       description: "Gradients! Starburts! Oh my!")
 
     ie = FactoryGirl.create(:project, name: "Internet Explorer")
+    assign_role!(author, :viewer, ie)
     FactoryGirl.create(:ticket, project: ie, author: author,
       name: "Standards compliance",
       description: "Is'nt a joke.")
 
+   login_as(author)
     visit "/"
   end
 
