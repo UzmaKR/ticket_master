@@ -10,23 +10,27 @@ describe TicketPolicy do
 
     context "for anonymous users" do
       let(:user) { nil }
-      it { should_not permit_action :show }    
+      it { should_not permit_action :show } 
+      it { should_not permit_action :create }   
     end
 
     context "for viewers of projects" do
       before { assign_role!(user, :viewer, project) }
       it { should permit_action :show }
+      it { should_not permit_action :create }
     end
 
     context "for editors of projects" do
       before { assign_role!(user, :editor, project) }
       it { should permit_action :show }
+      it { should permit_action :create }
     end
 
     context "for managers of a project" do
       before { assign_role!(user, :manager, project) }
 
-      it { should permit_action :show }     
+      it { should permit_action :show } 
+      it { should permit_action :create }    
     end
 
     context "for managers of other project" do
@@ -35,7 +39,8 @@ describe TicketPolicy do
         assign_role!(user, :manager, other_project)
       end 
 
-      it { should_not permit_action :show }     
+      it { should_not permit_action :show } 
+      it { should_not permit_action :create }    
     end 
 
     context "for admins" do
@@ -43,7 +48,8 @@ describe TicketPolicy do
         user.admin = true
       end 
 
-      it { should permit_action :show }     
+      it { should permit_action :show }  
+      it { should permit_action :create }   
     end 
 
   end
