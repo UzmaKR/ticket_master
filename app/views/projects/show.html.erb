@@ -23,9 +23,11 @@
 
 <header>
   <h2>Tickets</h2>
+  <% if policy(Ticket.new(project: @project)).create? %>
   <ul class="actions">
     <li><%= link_to "New Ticket", new_project_ticket_path(@project), class: "new" %></li>
   </ul>
+  <% end %>
 </header>
 
 <ul id="tickets">
