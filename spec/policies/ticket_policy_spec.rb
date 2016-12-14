@@ -8,29 +8,39 @@ describe TicketPolicy do
     let(:project) { FactoryGirl.create(:project) }
     let(:ticket) { FactoryGirl.create(:ticket, project: project) }
 
+
     context "for anonymous users" do
       let(:user) { nil }
       it { should_not permit_action :show } 
-      it { should_not permit_action :create }   
+      it { should_not permit_action :create } 
+      it { should_not permit_action :update }  
     end
 
     context "for viewers of projects" do
       before { assign_role!(user, :viewer, project) }
       it { should permit_action :show }
       it { should_not permit_action :create }
+      it { should_not permit_action :update } 
     end
 
     context "for editors of projects" do
       before { assign_role!(user, :editor, project) }
       it { should permit_action :show }
       it { should permit_action :create }
+      it { should_not permit_action :update }
+
+      context "when editor created the ticket" do
+        before { ticket.author = user }
+        it { should permit_action :update }
+      end
     end
 
     context "for managers of a project" do
       before { assign_role!(user, :manager, project) }
 
       it { should permit_action :show } 
-      it { should permit_action :create }    
+      it { should permit_action :create }
+      it { should permit_action :update }    
     end
 
     context "for managers of other project" do
@@ -40,7 +50,8 @@ describe TicketPolicy do
       end 
 
       it { should_not permit_action :show } 
-      it { should_not permit_action :create }    
+      it { should_not permit_action :create } 
+      it { should_not permit_action :update }    
     end 
 
     context "for admins" do
@@ -49,7 +60,8 @@ describe TicketPolicy do
       end 
 
       it { should permit_action :show }  
-      it { should permit_action :create }   
+      it { should permit_action :create } 
+      it { should permit_action :update }   
     end 
 
   end
